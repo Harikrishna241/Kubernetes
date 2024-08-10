@@ -1,0 +1,8 @@
+kind: namespace
+version: v1
+metadata:
+  name: expense
+  labels:
+    name: expense
+    enviraonmennt: dev
+    
