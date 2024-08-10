@@ -4,7 +4,7 @@ metadata:
   name: Expense
   region: us-east-1
 
-nodeGroups:
+managedNodeGroups:
 - name: expense
   instancetype: m5.large
   desiredCapacity: 3
