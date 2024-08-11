@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-pv
+  namespace: expense
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 100Gi
+  csi:
+    driver: ebs.csi.aws.com
+    fsType: ext4
+    volumeHandle: vol-07071dbd992d064ef
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-claim
+  namespace: expense
+spec:
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+  volumeName: test-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: expense
+  namespace: expense
+  labels:
+    component: nginx-static
+    project: expense
+    tier: nginx-static
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: persistent-storage
+      mountPath: /usr/share/nginx/html/
+  nodeSelector:
+    topology.kubernetes.io/zone=us-east-1a
+  volumes:
+  - name: persistent-storage
+    persistentVolumeClaim:
+      claimName: ebs-claim
+
+#above we are specificlly mentioned the node port ue to ,if we don't know where the pods are geting creating to map the storage
+# for that we can get key valuse from the cmd: kubectl get nodes --show-labels  from this out put w will get blow 
+# ip-192-168-25-161.ec2.internal   Ready    <none>   131m   v1.30.2-eks-1552ad0  
+#  alpha.eksctl.io/cluster-name=Expense,alpha.eksctl.io/nodegroup-name=expense,
+#  beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=m5.large,
+#  beta.kubernetes.io/os=linux,eks.amazonaws.com/capacityType=SPOT,eks.amazonaws.com/nodegroup-image=ami-0a1207755444805af,
+#  eks.amazonaws.com/nodegroup=expense,eks.amazonaws.com/sourceLaunchTemplateId=lt-0db148040b73b3516,
+#  eks.amazonaws.com/sourceLaunchTemplateVersion=1,failure-domain.beta.kubernetes.io/region=us-east-1,
+#  failure-domain.beta.kubernetes.io/zone=us-east-1a,k8s.io/cloud-provider-aws=1b92a4decc86582ef636de66c99fe107,
+#  kubernetes.io/arch=amd64,kubernetes.io/hostname=ip-192-168-25-161.ec2.internal,kubernetes.io/os=linux,node.kubernetes.io/
+#  instance-type=m5.large,topology.ebs.csi.aws.com/zone=us-east-1a,topology.k8s.aws/zone-id=use1-az4,topology.kubernetes.io/
+#  region=us-east-1,
+#  topology.kubernetes.io/zone=us-east-1a
+---
+# #if i wan to test we need a service i.eis load balancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: static-volume
+  namespace: expense
+spec:
+  type: LoadBalancer
+  selector:
+    component: nginx-static
+    project: expense
+    tier: nginx-static
+  ports:
+  - name: frontend
+    protocol: TCP
+    port: 80
+    targetPort: 80

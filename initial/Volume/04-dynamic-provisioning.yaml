@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dynamic-ebs-claim
+  namespace: expense
+spec:
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+  volumeName: expense-dynamic-sc
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 4Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: expense-dynamic
+  namespace: expense
+  labels:
+    component: nginx-dynamic
+    project: expense
+    tier: nginx-dynamic
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: persistent-storage
+      mountPath: /usr/share/nginx/html/
+  volumes:
+  - name: persistent-storage
+    persistentVolumeClaim:
+      claimName: dynamic-ebs-claim
