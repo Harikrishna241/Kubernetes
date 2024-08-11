@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   name: nginx
   Namespace: expense
+  label:
     envirnmennt: dev
     module: front-back
     project: expense
