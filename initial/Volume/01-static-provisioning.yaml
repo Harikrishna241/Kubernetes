@@ -39,7 +39,7 @@ metadata:
 spec:
   containers:
   - name: nginx
-    image: nginnx
+    image: nginx
     volumeMounts:
     - name: persistent-storage
       mountPath: /usr/share/nginx/html/
