@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-config-file
+  labels:
+    environment: production
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    envFrom:
+    - configMapKeyRef:
+        name: config-demo          # The ConfigMap this value comes from.
+
