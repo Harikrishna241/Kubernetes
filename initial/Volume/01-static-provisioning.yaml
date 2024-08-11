@@ -32,10 +32,10 @@ kind: Pod
 metadata:
   name: expense
   namespace: expense
-  -labels:
-    component: nginx-static
-    project: expense
-    tier: nginx-static
+  - labels:
+      component: nginx-static
+      project: expense
+      tier: nginx-static
 spec:
   containers:
   - name: nginx
