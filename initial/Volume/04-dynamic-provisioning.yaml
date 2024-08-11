@@ -4,7 +4,7 @@ metadata:
   name: dynamic-ebs-claim
   namespace: expense
 spec:
-  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+  storageClassName: expense-dynamic-sc # Empty string must be explicitly set otherwise default StorageClass will be set
   volumeName: expense-dynamic-sc
   accessModes:
     - ReadWriteOnce
