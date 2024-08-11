@@ -57,9 +57,9 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    component: frotend
+    component: nginx-static
     project: expense
-    tier: frotend
+    tier: nginx-static
   ports:
   - name: frontend
     protocol: TCP
