@@ -4,13 +4,10 @@ metadata:
   name: nginx-clusterip
   namespace: expense
 spec:
-  containers:
-  - name: nginx
-    image: nginx
-    ports:
-    - prtocol: TCP
-      port: 80
-      targetport: 80 # coatainer port (Nginx)
-    selector:
-      name: nginx-clusterip
-    type: ClusterIP
+  ports:
+  - prtocol: TCP
+    port: 80
+    targetport: 80 # coatainer port (Nginx)
+  selector:
+    name: nginx-clusterip
+  type: ClusterIP
