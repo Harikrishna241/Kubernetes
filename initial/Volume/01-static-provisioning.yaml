@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-pv
+  namespace: expense
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 100Gi
+  csi:
+    driver: ebs.csi.aws.com
+    fsType: ext4
+    volumeHandle: vol-07071dbd992d064ef
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: ebs-claim
+#   namespace: expense
+# spec:
+#   storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+#   volumeName: test-pv
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 5Gi
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: expense
+#   namespace: expense
+#   -labels:
+#     component: nginx-static
+#     project: expense
+#      tier: nginx-static
+
+# spec:
+#   containers:
+#   - name: nginx
+#     image: nginnx
+#     volumeMounts:
+#     - name: persistent-storage
+#       mountPath: /usr/share/nginx/html
+#   volumes:
+#   - name: persistent-storage
+#     persistentVolumeClaim:
+#       claimName: ebs-claim
+# #if i wan to test we need a service i.eis load balancer
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: static-volume
+#   namespace: expense
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     component: frotend
+#     project: expense
+#     tier: frotend
+#   ports:
+#   - name: frontend
+#     protocol: TCP
+#     port: 80
+#     targetPort: 80
+
