@@ -15,7 +15,8 @@ spec:
   template:
     metadata:
       labels:
-        tier: frontend
+        app: ninx
+        project: expense
     spec:
       containers:
       - name: nginx
