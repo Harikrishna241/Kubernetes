@@ -44,13 +44,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: backennd
   namespace: expense
 spec:
   selector:
-    component: mysql
+    component: backend
     project: expense
-    tier: db
+    tier: backend
   ports:
   - name: name-of-service-port
     protocol: TCP
