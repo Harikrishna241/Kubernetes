@@ -9,7 +9,7 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-deployment
+  name: backend-deployment
   namespace: expense
   labels:
     component: backend
@@ -34,7 +34,7 @@ spec:
         image: joindevops/backend:v1.0
         envFrom:
         - configMapRef:
-          name: backend   
+            name: backend   
 
 
 ---
