@@ -32,10 +32,8 @@ spec:
       containers:
       - name: backend
         image: joindevops/backend:v1.0
-    env:
-    - name: DB_HOST
       envFrom:
-    - configMapRef:
+      - configMapRef:
         name: backend   
 
 
