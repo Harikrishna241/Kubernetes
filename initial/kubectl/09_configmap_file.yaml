@@ -10,6 +10,6 @@ spec:
   - name: nginx
     image: nginx
     envFrom:
-    - configMapKeyRef:
+    - configMapRef:
         name: config-demo          # The ConfigMap this value comes from.
 
