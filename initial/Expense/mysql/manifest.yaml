@@ -24,5 +24,24 @@ spec:
       containers:
       - name: mysql
         image: joindevops/mysql:v1.0
-        ports:
-        - containerPort: 3306
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: expense
+spec:
+  selector:
+    component: mysql
+    project: expense
+    tier: db
+  ports:
+  - name: name-of-service-port
+    protocol: TCP
+    port: 3306
+    targetPort: 3306
+    
+  
+
