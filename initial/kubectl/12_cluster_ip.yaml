@@ -1,13 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-clusterip
-  namespace: expense
+  name: nginx-service
 spec:
-  ports:
-  - prtocol: TCP
-    port: 80
-    targetport: 80 # coatainer port (Nginx)
   selector:
-    name: nginx-clusterip
-  type: ClusterIP
+    envirnmennt: dev
+    module: front-back
+    project: expense
+  ports:
+  - name: name-of-service-port
+    protocol: TCP
+    port: 80
+    targetPort: 80
