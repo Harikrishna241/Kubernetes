@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend
+  namespace: expense
+data:
+  DB_HOST: mysql # here we are giving the service name given in mysql yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  namespace: expense
+  labels:
+    component: backend
+    project: expense
+    tier: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      component: backend
+      project: expense
+      tier: backend
+  template:
+    metadata:
+      labels:
+        component: backend
+        project: expense
+        tier: backend
+    spec:
+      containers:
+      - name: backend
+        image: joindevops/backend:v1.0
+    env:
+    - name: DB_HOST
+      envFrom:
+    - configMapRef:
+        name: backend   
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: expense
+spec:
+  selector:
+    component: mysql
+    project: expense
+    tier: db
+  ports:
+  - name: name-of-service-port
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
