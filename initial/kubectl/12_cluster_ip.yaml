@@ -11,6 +11,6 @@ spec:
     - prtocol: TCP
       port: 80
       targetport: 80 # coatainer port (Nginx)
-  selector:
-    name: nginx-clusterip
-  type: ClusterIP
+    selector:
+      name: nginx-clusterip
+    type: ClusterIP
