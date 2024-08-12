@@ -17,7 +17,7 @@ metadata:
   name: efs-app
 spec:
   containers:
-    - name: ngix-dynamic
+    - name: nginx
       image: nginx
       volumeMounts:
         - name: persistent-storage
