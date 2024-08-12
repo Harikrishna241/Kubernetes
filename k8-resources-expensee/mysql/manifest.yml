@@ -1,0 +1,55 @@
+#Creation of PVC for the my sql module 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dynamic-ebs-claim
+  namespace: expense
+spec:
+  storageClassName: expense-dynamic-sc # Empty string must be explicitly set otherwise default StorageClass will be set
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 4Gi
+---
+#creation f pod for to create the mysql
+apiVersion: v1
+kind: deployment
+metadata:
+  name: expense
+  namespace: expense
+  labels:
+    component: mysql-static
+    project: expense
+    tier: mysql-static
+spec:
+  containers:
+  - name: mysql
+    image: joindevops/mysql:v1.0
+    volumeMounts:
+    - name: persistent-storage
+      mountPath: 
+  nodeSelector:
+    topology.kubernetes.io/zone: us-east-1a
+  volumes:
+  - name: persistent-storage
+    persistentVolumeClaim:
+      claimName: mysql-ebs-claim
+---
+#creation of service 
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-static-volume
+  namespace: expense
+spec:
+  selector:
+    component: mysql-static
+    project: expense
+    tier: mysql-static
+  ports:
+  - name: frontend
+    protocol: TCP
+    port: 3306
+    targetPort: 3306
+    
