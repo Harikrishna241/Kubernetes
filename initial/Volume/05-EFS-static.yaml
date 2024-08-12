@@ -35,6 +35,10 @@ kind: Pod
 metadata:
   name: efs-app
   namespace: expense
+  labels:
+    component: nginx-static
+    project: expense
+    tier: nginx-static
 spec:
   containers:
   - name: nginx-app
@@ -46,3 +50,20 @@ spec:
   - name: persistent-storage
     persistentVolumeClaim:
       claimName: efs-static-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: static-volume
+  namespace: expense
+spec:
+  type: LoadBalancer
+  selector:
+    component: nginx-static
+    project: expense
+    tier: nginx-static
+  ports:
+  - name: nginx
+    protocol: TCP
+    port: 80
+    targetPort: 80
