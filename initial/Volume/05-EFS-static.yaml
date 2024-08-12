@@ -24,7 +24,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: efs-static-pv
+  storageClassName:""
   resources:
     requests:
       storage: 2Gi
