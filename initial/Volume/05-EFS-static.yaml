@@ -12,4 +12,19 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: fs-e8a95a42
+    volumeHandle: fs-0a7d760ea50c4a088
+
+---
+#Claim 
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-static-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: efs-static-pv
+  resources:
+    requests:
+      storage: 4Gi
